@@ -1,0 +1,4 @@
+<?php
+$posts = function($file) {
+    return new stdClass();
+};
