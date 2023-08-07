@@ -9,7 +9,7 @@ class Post extends Model
 {
     use HasFactory;
 
-    protected $guarded = ['id'];
+    // protected $guarded = ['id']; 
 //    protected $fillable=['title', 'excerpt', 'body'];
     protected  $with = ['category', 'author'];
 
@@ -43,10 +43,10 @@ class Post extends Model
                 ->whereHas('author', fn($query) => $query->where('username', $author));
         });
     }
-    public function getRouteKeyName()
-    {
-     return 'slug';
-    }
+    // public function getRouteKeyName()
+    // {
+    //  return 'slug';
+    // }
     public function comments() {
         return $this->hasMany(Comment::class);
     }

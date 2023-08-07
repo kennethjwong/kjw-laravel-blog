@@ -24,12 +24,22 @@
 
             <div class="mt-8 md:mt-0 flex items-center">
                 @auth
-                    <span class="text-xs font-bold uppercase">Welcome back, {{auth()->user()->name}}!</span>
-                    <form action="/logout" method="post" class="text-xs font-semibold text-blue-500 ml-6">
-                        @csrf
-                        <button type="submit">Log Out</button>
+                    <x-dropdown>
+                        <x-slot name="trigger">
+                            <button class="text-xs font-bold uppercase">Welcome back, {{auth()->user()->name}}!</button>
+                        </x-slot>
+                        @if (auth()->user()->can('admin'))
+                            {{-- or use Laravel @can...@endcan   --}}
+                            <x-dropdown-item href="/admin/posts" :active="request()->is('admin/posts')">All Posts</x-dropdown-item>
+                            <x-dropdown-item href="/admin/posts/create" :active="request()->is('admin/posts/create')">New Post</x-dropdown-item>
+                        @endif
+                        <x-dropdown-item href="#" x-data="{}" @click.prevent="document.querySelector('#logout-form').submit()">Log out</x-dropdown-item>
 
-                    </form>
+                        <form id="logout-form" method="post" action="/logout" class="hidden">
+                            @csrf
+                        </form>
+                    </x-dropdown>
+
                 @else
                    {{-- or use @if (! auth()->check() --}}
                     <a href="/register" class="text-xs font-bold uppercase">Register</a>
